@@ -6,8 +6,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget{
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.transparent,
-      title: const Text('Task\'s'),
+      title: const Text('Your Task\'s'),
       actions: [
         Padding(
           padding: const EdgeInsets.all(8.0),

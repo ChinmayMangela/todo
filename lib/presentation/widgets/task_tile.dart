@@ -19,22 +19,21 @@ class TaskTile extends StatefulWidget {
 class _TaskTileState extends State<TaskTile> {
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Card(
-      color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10)
       ),
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       child: SizedBox(
         width: double.infinity,
-        height: HelperFunctions.getScreenHeight(context) * 0.08,
+        height: HelperFunctions.getScreenHeight(context) * 0.094,
         child: ListTile(
           leading: Checkbox(
-            checkColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4)
             ),
-            activeColor: Colors.black,
+            activeColor: isDarkMode ? Colors.white : Colors.black,
             onChanged: (value) {
               setState(() {
                 widget.task.isCompleted = value!;

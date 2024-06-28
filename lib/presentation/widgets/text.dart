@@ -6,14 +6,14 @@ class TextWidget extends StatelessWidget {
     super.key,
     required this.text,
     required this.textSize,
-    this.textColor = Colors.black,
+    this.textColor,
     required this.isBoldFont,
     this.isTaskCompleted = false,
   });
 
   final String text;
   final double textSize;
-  final Color textColor;
+  final Color? textColor;
   final bool isBoldFont;
   final bool isTaskCompleted;
   @override

@@ -17,15 +17,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
       appBar: const MyAppBar(),
-      body: _buildBody(),
+      body: _buildBody(isDarkMode),
       floatingActionButton: _buildFloatingActionButton(),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(bool isDarkMode) {
     final taskListProvider = Provider.of<TaskProvider>(context);
     return ListView.builder(
       itemCount: taskListProvider.tasks.length,
@@ -40,8 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     taskListProvider.removeTask(currentTask);
                     HelperFunctions.showSnackBar(context, '${currentTask.name} task removed');
                   },
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
+                  backgroundColor: isDarkMode ? Colors.red.shade900 : Colors.red.shade700,
+                  foregroundColor: isDarkMode ? Colors.black : Colors.white,
                   icon: Icons.delete,
                 )
               ],
@@ -56,8 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       onPressed: _openModalBottomSheet,
-      backgroundColor: Colors.black,
-      foregroundColor: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(50),
       ),
@@ -67,6 +65,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _openModalBottomSheet() async {
     showModalBottomSheet(
+      sheetAnimationStyle: AnimationStyle(
+        curve: Curves.fastOutSlowIn,
+        duration: const Duration(seconds: 1),
+      ),
+      clipBehavior: Clip.antiAlias,
       isScrollControlled: true,
       context: context,
       shape: const RoundedRectangleBorder(

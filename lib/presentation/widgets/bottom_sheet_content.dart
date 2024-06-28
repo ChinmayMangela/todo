@@ -51,11 +51,8 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
   }
 
   bool _isValidInput() {
-    return [
-      _nameController.text,
-      _dateController.text,
-      _timeController.text
-    ].every((field) => field.isNotEmpty);
+    return [_nameController.text, _dateController.text, _timeController.text]
+        .every((field) => field.isNotEmpty);
   }
 
   void _addNewTask() {
@@ -63,7 +60,8 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
     if (_isValidInput()) {
       final newTask = Task(
         name: _nameController.text,
-        dueDate: _dateFormat.parse(_dateController.text), // Parse using DateFormat
+        dueDate: _dateFormat.parse(_dateController.text),
+        // Parse using DateFormat
         dueTime: TimeOfDay.fromDateTime(
             DateFormat('HH:mm').parse(_timeController.text)),
       );
@@ -97,7 +95,6 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      elevation: 6,
       title: const Text('Task'),
       centerTitle: true,
     );
@@ -105,6 +102,7 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
 
   Widget _buildBody(
       BuildContext context, double screenWidth, double screenHeight) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return SingleChildScrollView(
         // Wrap in SingleChildScrollView to prevent overflow
         child: Container(
@@ -122,7 +120,7 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
           SizedBox(height: screenHeight * 0.04),
           _buildInputCard(_timeComponent(screenWidth)),
           SizedBox(height: screenHeight * 0.08),
-          _doneButton(),
+          _doneButton(isDarkMode),
         ],
       ),
     ));
@@ -175,21 +173,24 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
     );
   }
 
-  Widget _doneButton() {
+  Widget _doneButton(bool isDarkMode) {
     return SizedBox(
       width: double.infinity,
       height: HelperFunctions.getScreenHeight(context) * 0.07,
       child: ElevatedButton(
         onPressed: _addNewTask,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.black,
+          backgroundColor: isDarkMode ? Colors.white : Colors.black,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        child: Text('Done', style: GoogleFonts.poppins(
-          color: Colors.white,
-        )),
+        child: TextWidget(
+          text: 'Done',
+          textSize: 20,
+          isBoldFont: true,
+          textColor: isDarkMode ? Colors.black : Colors.white,
+        ),
       ),
     );
   }

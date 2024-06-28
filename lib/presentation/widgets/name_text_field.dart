@@ -10,17 +10,22 @@ class NameTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Expanded(
       child: TextField(
-        maxLength: 30,
-        controller: controller,
-        decoration: const InputDecoration(
+          maxLength: 30,
+          controller: controller,
+          decoration: InputDecoration(
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: isDarkMode ? Colors.white : Colors.black,
+              )
+            ),
+            hintText: 'Enter task name',
 
-          hintText: 'Enter task name',
-          border: OutlineInputBorder(),
-        )
-      ),
+            border: const OutlineInputBorder(
+            ),
+          )),
     );
   }
-
 }

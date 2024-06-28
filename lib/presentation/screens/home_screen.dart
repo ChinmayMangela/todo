@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/presentation/providers/task_provider.dart';
 import 'package:todo/presentation/widgets/app_bar.dart';
 import 'package:todo/presentation/widgets/bottom_sheet_content.dart';
-import 'package:todo/presentation/widgets/task_tile.dart';
-import 'package:todo/utils/helper_functions.dart';
+import 'package:todo/presentation/widgets/task_list.dart';
+import 'package:todo/presentation/widgets/text.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -27,29 +26,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildBody(bool isDarkMode) {
     final taskListProvider = Provider.of<TaskProvider>(context);
-    return ListView.builder(
-      itemCount: taskListProvider.tasks.length,
-      itemBuilder: (context, index) {
-        final currentTask = taskListProvider.tasks[index];
-        return Slidable(
-            endActionPane: ActionPane(
-              motion: const StretchMotion(),
-              children: [
-                SlidableAction(
-                  onPressed: (context) {
-                    taskListProvider.removeTask(currentTask);
-                    HelperFunctions.showSnackBar(context, '${currentTask.name} task removed');
-                  },
-                  backgroundColor: isDarkMode ? Colors.red.shade900 : Colors.red.shade700,
-                  foregroundColor: isDarkMode ? Colors.black : Colors.white,
-                  icon: Icons.delete,
-                )
-              ],
-            ),
-            child: TaskTile(
-              task: currentTask,
-            ));
-      },
+    return taskListProvider.tasks.isEmpty ? _showEmptyTodoListMessage() : const TaskList();
+  }
+
+  Widget _showEmptyTodoListMessage() {
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextWidget(text: 'No todos yet!', textSize: 14, isBoldFont: true),
+          SizedBox(height: 10),
+          TextWidget(
+              text: 'Tap + to add a new todo', textSize: 14, isBoldFont: true),
+        ],
+      ),
     );
   }
 

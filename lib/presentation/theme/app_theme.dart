@@ -17,6 +17,26 @@ class AppTheme {
     );
   }
 
+  static _getDatePickerThemeData(bool isDarkMode) {
+    return DatePickerThemeData(
+        backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
+        todayForegroundColor: WidgetStateProperty.all(isDarkMode ? Colors.white : Colors.black),
+        dayBackgroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return isDarkMode ? Colors.white : Colors.black;
+          }
+          return null; // Default background
+        },),
+        dayForegroundColor: WidgetStateProperty.resolveWith((states) {
+          if(states.contains(WidgetState.selected)) {
+            return isDarkMode ? Colors.black : Colors.white;
+          }
+          return null;
+        }),
+    );
+
+  }
+
   static _getAppBarTheme() {
     return const AppBarTheme(
       color: Colors.transparent,
@@ -30,6 +50,7 @@ class AppTheme {
     appBarTheme: _getAppBarTheme(),
     checkboxTheme: _getCheckBoxThemeData(false),
     floatingActionButtonTheme: _getFloatingActionThemeData(false),
+    datePickerTheme: _getDatePickerThemeData(false),
   );
 
   static final darkTheme = ThemeData(
@@ -39,5 +60,6 @@ class AppTheme {
     appBarTheme: _getAppBarTheme(),
     checkboxTheme: _getCheckBoxThemeData(true),
     floatingActionButtonTheme: _getFloatingActionThemeData(true),
+    datePickerTheme: _getDatePickerThemeData(true),
   );
 }

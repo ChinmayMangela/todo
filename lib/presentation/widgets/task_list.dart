@@ -25,13 +25,15 @@ class TaskList extends StatelessWidget {
                   onPressed: (context) {
                     taskListProvider.removeTask(currentTask);
                     HelperFunctions.showSnackBar(
-                        context, '${currentTask.name} task removed');
+                        context, '${currentTask.name} task removed',
+                      () => taskListProvider.addTask(currentTask),
+                    );
                   },
                   backgroundColor:
                   isDarkMode ? Colors.red.shade900 : Colors.red.shade700,
                   foregroundColor: isDarkMode ? Colors.black : Colors.white,
                   icon: Icons.delete,
-                )
+                ),
               ],
             ),
             child: TaskTile(

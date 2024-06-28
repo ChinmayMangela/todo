@@ -30,6 +30,11 @@ class _TaskTileState extends State<TaskTile> {
         height: HelperFunctions.getScreenHeight(context) * 0.08,
         child: ListTile(
           leading: Checkbox(
+            checkColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4)
+            ),
+            activeColor: Colors.black,
             onChanged: (value) {
               setState(() {
                 widget.task.isCompleted = value!;

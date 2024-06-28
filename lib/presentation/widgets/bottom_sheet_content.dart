@@ -73,7 +73,7 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
       _timeController.clear();
       Navigator.pop(context);
     } else {
-      HelperFunctions.showSnackBar(context, 'Please enter all fields');
+      HelperFunctions.showSnackBar(context, 'Please fill all fields');
     }
   }
 

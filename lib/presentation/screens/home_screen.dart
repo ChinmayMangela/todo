@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/presentation/providers/task_provider.dart';
 import 'package:todo/presentation/widgets/app_bar.dart';
 import 'package:todo/presentation/widgets/bottom_sheet_content.dart';
 import 'package:todo/presentation/widgets/task_tile.dart';
+import 'package:todo/utils/helper_functions.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,7 +31,24 @@ class _HomeScreenState extends State<HomeScreen> {
       itemCount: taskListProvider.tasks.length,
       itemBuilder: (context, index) {
         final currentTask = taskListProvider.tasks[index];
-        return TaskTile(task: currentTask);
+        return Slidable(
+            endActionPane: ActionPane(
+              motion: const StretchMotion(),
+              children: [
+                SlidableAction(
+                  onPressed: (context) {
+                    taskListProvider.removeTask(currentTask);
+                    HelperFunctions.showSnackBar(context, '${currentTask.name} task removed');
+                  },
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  icon: Icons.delete,
+                )
+              ],
+            ),
+            child: TaskTile(
+              task: currentTask,
+            ));
       },
     );
   }

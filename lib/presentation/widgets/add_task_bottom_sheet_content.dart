@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/presentation/providers/task_provider.dart';
@@ -8,17 +7,16 @@ import 'package:todo/presentation/widgets/text.dart';
 import 'package:todo/presentation/widgets/text_field.dart';
 import 'package:todo/utils/date_formatter.dart';
 import 'package:todo/utils/helper_functions.dart';
-
 import '../../domain/models/task.dart';
 
-class BottomSheetContent extends StatefulWidget {
-  const BottomSheetContent({super.key});
+class AddTaskBottomSheetContent extends StatefulWidget {
+  const AddTaskBottomSheetContent({super.key});
 
   @override
-  State<BottomSheetContent> createState() => _BottomSheetContentState();
+  State<AddTaskBottomSheetContent> createState() => _AddTaskBottomSheetContentState();
 }
 
-class _BottomSheetContentState extends State<BottomSheetContent> {
+class _AddTaskBottomSheetContentState extends State<AddTaskBottomSheetContent> {
   final _nameController = TextEditingController();
   final _dateController = TextEditingController();
   final _timeController = TextEditingController();
@@ -55,6 +53,13 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
         .every((field) => field.isNotEmpty);
   }
 
+  void _clearInputFields() {
+    _nameController.clear();
+    _dateController.clear();
+    _timeController.clear();
+  }
+
+
   void _addNewTask() {
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
     if (_isValidInput()) {
@@ -66,9 +71,7 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
             DateFormat('HH:mm').parse(_timeController.text)),
       );
       taskProvider.addTask(newTask);
-      _nameController.clear();
-      _dateController.clear();
-      _timeController.clear();
+      _clearInputFields();
       Navigator.pop(context);
     } else {
       HelperFunctions.showSnackBar(context, 'Please fill all fields');
@@ -120,7 +123,7 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
           SizedBox(height: screenHeight * 0.04),
           _buildInputCard(_timeComponent(screenWidth)),
           SizedBox(height: screenHeight * 0.08),
-          _doneButton(isDarkMode),
+          _buildDoneButton(isDarkMode),
         ],
       ),
     ));
@@ -173,7 +176,7 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
     );
   }
 
-  Widget _doneButton(bool isDarkMode) {
+  Widget _buildDoneButton(bool isDarkMode) {
     return SizedBox(
       width: double.infinity,
       height: HelperFunctions.getScreenHeight(context) * 0.07,

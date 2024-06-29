@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../presentation/widgets/bottom_sheet_content.dart';
-
 class HelperFunctions {
   static double getScreenWidth(BuildContext context) {
     return MediaQuery.of(context).size.width;
@@ -23,7 +21,10 @@ class HelperFunctions {
     );
   }
 
-  static Future<void> openModalBottomSheet(BuildContext context) async {
+  static Future<void> openModalBottomSheet({
+    required BuildContext context,
+    required Widget child,
+  }) async {
     showModalBottomSheet(
       sheetAnimationStyle: AnimationStyle(
         curve: Curves.fastOutSlowIn,
@@ -38,7 +39,7 @@ class HelperFunctions {
       builder: (context) {
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.9,
-          child: const BottomSheetContent(),
+          child: child,
         );
       },
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/presentation/providers/task_provider.dart';
+import 'package:todo/presentation/widgets/add_task_bottom_sheet_content.dart';
 import 'package:todo/presentation/widgets/app_bar.dart';
 import 'package:todo/presentation/widgets/task_list.dart';
 import 'package:todo/presentation/widgets/text.dart';
@@ -26,7 +27,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildBody(bool isDarkMode) {
     final taskListProvider = Provider.of<TaskProvider>(context);
-    return taskListProvider.tasks.isEmpty ? _showEmptyTodoListMessage() : const TaskList();
+    return taskListProvider.tasks.isEmpty
+        ? _showEmptyTodoListMessage()
+        : const TaskList();
   }
 
   Widget _showEmptyTodoListMessage() {
@@ -46,7 +49,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       onPressed: () async {
-        await HelperFunctions.openModalBottomSheet(context);
+        await HelperFunctions.openModalBottomSheet(
+          context: context,
+          child: const AddTaskBottomSheetContent(),
+        );
       },
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(50),
@@ -54,5 +60,4 @@ class _HomeScreenState extends State<HomeScreen> {
       child: const Icon(Icons.add),
     );
   }
-
 }

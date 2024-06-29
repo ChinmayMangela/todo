@@ -21,4 +21,12 @@ class TaskProvider extends ChangeNotifier  {
     notifyListeners();
   }
 
+  void updateTask(Task oldTask, Task updatedTask) {
+    final index = _tasksList.indexOf(oldTask);
+    if(index != -1) {
+      _tasksList[index] = updatedTask;
+    }
+    notifyListeners();
+  }
+
 }

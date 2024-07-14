@@ -2,22 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/presentation/providers/task_provider.dart';
-import 'package:todo/presentation/widgets/edit_task_bottom_sheet_content.dart';
+import 'package:todo/presentation/widgets/task_editing_bottom_sheet.dart';
 import 'package:todo/presentation/widgets/task_tile.dart';
 
+import '../../domain/models/task.dart';
 import '../../utils/helper_functions.dart';
 
 class TaskList extends StatelessWidget {
-  const TaskList({super.key});
+  const TaskList({
+    super.key,
+    required this.taskList,
+  });
+
+  final List<Task> taskList;
 
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final taskListProvider = Provider.of<TaskProvider>(context);
     return ListView.builder(
-      itemCount: taskListProvider.tasks.length,
+      itemCount: taskList.length,
       itemBuilder: (context, index) {
-        final currentTask = taskListProvider.tasks[index];
+        final currentTask = taskList[index];
         return Slidable(
           endActionPane: ActionPane(
             motion: const StretchMotion(),
@@ -41,7 +47,7 @@ class TaskList extends StatelessWidget {
                 onPressed: (context) {
                   HelperFunctions.openModalBottomSheet(
                     context: context,
-                    child: EditTaskBottomSheetContent(
+                    child: TaskEditingBottomSheet(
                       task: currentTask,
                     ),
                   );

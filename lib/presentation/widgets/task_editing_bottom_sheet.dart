@@ -10,8 +10,8 @@ import 'package:todo/utils/helper_functions.dart';
 import '../../domain/models/task.dart';
 import '../providers/task_provider.dart';
 
-class EditTaskBottomSheetContent extends StatefulWidget {
-  const EditTaskBottomSheetContent({
+class TaskEditingBottomSheet extends StatefulWidget {
+  const TaskEditingBottomSheet({
     super.key,
     required this.task,
   });
@@ -19,13 +19,12 @@ class EditTaskBottomSheetContent extends StatefulWidget {
   final Task task;
 
   @override
-  State<EditTaskBottomSheetContent> createState() =>
-      _EditTaskBottomSheetContentState();
+  State<TaskEditingBottomSheet> createState() => _TaskEditingBottomSheetState();
 }
 
-class _EditTaskBottomSheetContentState
-    extends State<EditTaskBottomSheetContent> {
-  final _dateFormat = DateFormat('M/d/yyyy');
+class _TaskEditingBottomSheetState extends State<TaskEditingBottomSheet> {
+  final _dateFormat = DateFormat('yMd');
+  final _timeFormat = DateFormat('jm');
   final _nameController = TextEditingController();
   final _dateController = TextEditingController();
   final _timeController = TextEditingController();
@@ -46,9 +45,12 @@ class _EditTaskBottomSheetContentState
 
   Future<void> _selectTime() async {
     final pickedTime =
-        await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    await showTimePicker(context: context, initialTime: TimeOfDay.now());
     if (pickedTime != null) {
-      final formattedTime = DateFormatter.formatTime(pickedTime);
+      final now = DateTime.now();
+      final dateTime = DateTime(
+          now.year, now.month, now.day, pickedTime.hour, pickedTime.minute);
+      final formattedTime = _timeFormat.format(dateTime);
       setState(() {
         _timeController.text = formattedTime;
       });
@@ -56,16 +58,22 @@ class _EditTaskBottomSheetContentState
   }
 
   void _editTask() {
-    final updatedTask = Task(
-      name: _nameController.text,
-      dueDate: _dateFormat.parse(_dateController.text),
-      dueTime: TimeOfDay.fromDateTime(
-        DateFormat('HH:mm').parse(_timeController.text),
-      )
-    );
+    try {
+      final updatedTask = Task(
+        name: _nameController.text,
+        dueDate: _dateFormat.parse(_dateController.text),
+        dueTime: _timeFormat.parse(_timeController.text),
+      );
 
-    Provider.of<TaskProvider>(context, listen: false).updateTask(widget.task, updatedTask);
-    Navigator.of(context).pop();
+      Provider.of<TaskProvider>(context, listen: false)
+          .updateTask(widget.task, updatedTask);
+      Navigator.of(context).pop();
+    } catch (e) {
+      // Handle the exception, e.g., display an error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Invalid date or time format')),
+      );
+    }
   }
 
   @override
@@ -180,12 +188,6 @@ class _EditTaskBottomSheetContentState
       height: HelperFunctions.getScreenHeight(context) * 0.07,
       child: ElevatedButton(
         onPressed: _editTask,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: isDarkMode ? Colors.white : Colors.black,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
         child: TextWidget(
           text: 'Edit',
           textSize: 20,

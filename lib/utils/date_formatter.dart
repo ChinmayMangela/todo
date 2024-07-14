@@ -1,5 +1,3 @@
-
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DateFormatter {
@@ -10,9 +8,10 @@ class DateFormatter {
     return _dateFormatter.format(date);
   }
 
-  static String formatTime(TimeOfDay time) {
+  static String formatTime(DateTime time) {
     final now = DateTime.now();
-    final dateTime = DateTime(now.year, now.month, now.day, time.hour, time.minute);
+    final dateTime =
+        DateTime(now.year - 1, now.month, now.day, time.hour, time.minute);
     final formattedTime = _timeFormatter.format(dateTime);
     return formattedTime;
   }

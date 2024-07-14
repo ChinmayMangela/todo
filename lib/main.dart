@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/data/datasources/isar_localdatabase.dart';
 import 'package:todo/presentation/providers/task_provider.dart';
 import 'package:todo/presentation/screens/home_screen.dart';
 import 'package:todo/presentation/theme/app_theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await IsarLocalDatabase.initialize();
   runApp(
     ChangeNotifierProvider(
       create: (context) => TaskProvider(),

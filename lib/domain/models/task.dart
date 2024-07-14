@@ -1,10 +1,12 @@
+import 'package:isar/isar.dart';
 
-import 'package:flutter/material.dart';
-
+part 'task.g.dart';
+@Collection()
 class Task {
+  Id id = Isar.autoIncrement;
   final String name;
   final DateTime dueDate;
-  final TimeOfDay dueTime;
+  final DateTime dueTime;
   bool isCompleted;
 
   Task({

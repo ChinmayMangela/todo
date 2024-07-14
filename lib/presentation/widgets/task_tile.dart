@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:todo/domain/models/task.dart';
 import 'package:todo/presentation/widgets/text.dart';
 import 'package:todo/utils/date_formatter.dart';
@@ -19,51 +20,57 @@ class TaskTile extends StatefulWidget {
 class _TaskTileState extends State<TaskTile> {
   @override
   Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: _buildTaskTile(),
+    );
+  }
+
+  Widget _buildTaskTile() {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10)
-      ),
+    return Container(
+      width: double.maxFinite,
+      height: HelperFunctions.getScreenHeight(context) * 0.094,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-      child: SizedBox(
-        width: double.infinity,
-        height: HelperFunctions.getScreenHeight(context) * 0.094,
-        child: ListTile(
-          leading: Checkbox(
-            shape: RoundedRectangleBorder(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+        color: isDarkMode ? Colors.grey.shade900 : Colors.white
+      ),
+      child: ListTile(
+        leading: Checkbox(
+          shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4)
+          ),
+          activeColor: isDarkMode ? Colors.white : Colors.black,
+          onChanged: (value) {
+            setState(() {
+              widget.task.isCompleted = value!;
+            });
+          },
+          value: widget.task.isCompleted,
+        ),
+        title: TextWidget(
+          text: widget.task.name,
+          textSize: 17,
+          isBoldFont: true,
+          isTaskCompleted: widget.task.isCompleted,
+        ),
+        subtitle: Row(
+          children: [
+            TextWidget(
+              text: _getDay(widget.task.dueDate),
+              textSize: 11,
+              isBoldFont: false,
+              isTaskCompleted: widget.task.isCompleted,
             ),
-            activeColor: isDarkMode ? Colors.white : Colors.black,
-            onChanged: (value) {
-              setState(() {
-                widget.task.isCompleted = value!;
-              });
-            },
-            value: widget.task.isCompleted,
-          ),
-          title: TextWidget(
-            text: widget.task.name,
-            textSize: 17,
-            isBoldFont: true,
-            isTaskCompleted: widget.task.isCompleted,
-          ),
-          subtitle: Row(
-            children: [
-              TextWidget(
-                text: _getDay(widget.task.dueDate),
-                textSize: 11,
-                isBoldFont: false,
-                isTaskCompleted: widget.task.isCompleted,
-              ),
-              const SizedBox(width: 10),
-              TextWidget(
-                text: _getTime(widget.task.dueTime),
-                textSize: 11,
-                isBoldFont: false,
-                isTaskCompleted: widget.task.isCompleted,
-              ),
-            ],
-          ),
+            const SizedBox(width: 10),
+            TextWidget(
+              text: _getTime(widget.task.dueTime),
+              textSize: 11,
+              isBoldFont: false,
+              isTaskCompleted: widget.task.isCompleted,
+            ),
+          ],
         ),
       ),
     );
@@ -83,8 +90,8 @@ class _TaskTileState extends State<TaskTile> {
     }
   }
 
-  String _getTime(TimeOfDay time) {
-    final dueTime = widget.task.dueTime;
-    return DateFormatter.formatTime(dueTime);
+  String _getTime(DateTime time) {
+    return DateFormat('jm').format(time);
   }
 }
+

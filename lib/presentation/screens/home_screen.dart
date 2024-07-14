@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:todo/presentation/providers/task_provider.dart';
-import 'package:todo/presentation/widgets/add_task_bottom_sheet_content.dart';
+import 'package:todo/data/datasources/isar_localdatabase.dart';
+import 'package:todo/presentation/widgets/task_creation_bottom_sheet.dart';
 import 'package:todo/presentation/widgets/app_bar.dart';
 import 'package:todo/presentation/widgets/task_list.dart';
 import 'package:todo/presentation/widgets/text.dart';
@@ -26,13 +25,26 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildBody(bool isDarkMode) {
-    final taskListProvider = Provider.of<TaskProvider>(context);
-    return taskListProvider.tasks.isEmpty
-        ? _showEmptyTodoListMessage()
-        : const TaskList();
+    return FutureBuilder(future: IsarLocalDatabase().fetchTasks(), builder: (context, snapShot) {
+      switch(snapShot.connectionState) {
+        case ConnectionState.waiting :
+          return _buildCircularProgressIndicator();
+        default:
+          if(snapShot.data!.isEmpty) {
+            return _buildEmptyTodoListMessage();
+          } else if(snapShot.hasError) {
+            return Center(child: Text(snapShot.error.toString()),);
+          } else {
+            return TaskList(
+              taskList: snapShot.data!,
+            );
+          }
+      }
+    });
   }
 
-  Widget _showEmptyTodoListMessage() {
+
+  Widget _buildEmptyTodoListMessage() {
     return const Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -46,12 +58,18 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _buildCircularProgressIndicator() {
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       onPressed: () async {
         await HelperFunctions.openModalBottomSheet(
           context: context,
-          child: const AddTaskBottomSheetContent(),
+          child: const TaskCreationBottomSheet(),
         );
       },
       shape: RoundedRectangleBorder(

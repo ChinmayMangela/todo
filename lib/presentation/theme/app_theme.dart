@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
 
-  static _getCheckBoxThemeData(bool isDarkMode) {
+  static _getCheckBoxTheme(bool isDarkMode) {
     return CheckboxThemeData(
       checkColor: WidgetStateProperty.all(
         isDarkMode ? Colors.black : Colors.white,
@@ -10,14 +10,14 @@ class AppTheme {
     );
   }
 
-  static _getFloatingActionThemeData(bool isDarkMode) {
+  static _getFloatingActionTheme(bool isDarkMode) {
     return FloatingActionButtonThemeData(
       backgroundColor: isDarkMode ? Colors.white : Colors.black,
       foregroundColor: isDarkMode ? Colors.black : Colors.white,
     );
   }
 
-  static _getDatePickerThemeData(bool isDarkMode) {
+  static _getDatePickerTheme(bool isDarkMode) {
     return DatePickerThemeData(
         backgroundColor: isDarkMode ? Colors.grey[900] : Colors.white,
         todayForegroundColor: WidgetStateProperty.all(isDarkMode ? Colors.white : Colors.black),
@@ -37,6 +37,18 @@ class AppTheme {
 
   }
 
+  static _getElevatedButtonTheme(bool isDarkMode) {
+    return ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        backgroundColor: isDarkMode ? Colors.white : Colors.black,
+        foregroundColor: isDarkMode ? Colors.black : Colors.white,
+      )
+    );
+  }
+
   static _getAppBarTheme() {
     return const AppBarTheme(
       color: Colors.transparent,
@@ -46,20 +58,20 @@ class AppTheme {
   static final lightTheme = ThemeData(
     brightness: Brightness.light,
     scaffoldBackgroundColor: Colors.grey.shade200,
-    cardColor: Colors.white,
     appBarTheme: _getAppBarTheme(),
-    checkboxTheme: _getCheckBoxThemeData(false),
-    floatingActionButtonTheme: _getFloatingActionThemeData(false),
-    datePickerTheme: _getDatePickerThemeData(false),
+    checkboxTheme: _getCheckBoxTheme(false),
+    floatingActionButtonTheme: _getFloatingActionTheme(false),
+    datePickerTheme: _getDatePickerTheme(false),
+    elevatedButtonTheme: _getElevatedButtonTheme(false),
   );
 
   static final darkTheme = ThemeData(
     brightness: Brightness.dark,
     scaffoldBackgroundColor: Colors.black,
-    cardColor: Colors.grey.shade700,
     appBarTheme: _getAppBarTheme(),
-    checkboxTheme: _getCheckBoxThemeData(true),
-    floatingActionButtonTheme: _getFloatingActionThemeData(true),
-    datePickerTheme: _getDatePickerThemeData(true),
+    checkboxTheme: _getCheckBoxTheme(true),
+    floatingActionButtonTheme: _getFloatingActionTheme(true),
+    datePickerTheme: _getDatePickerTheme(true),
+    elevatedButtonTheme: _getElevatedButtonTheme(true),
   );
 }

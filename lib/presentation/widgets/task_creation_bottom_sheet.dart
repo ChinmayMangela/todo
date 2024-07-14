@@ -9,19 +9,21 @@ import 'package:todo/utils/date_formatter.dart';
 import 'package:todo/utils/helper_functions.dart';
 import '../../domain/models/task.dart';
 
-class AddTaskBottomSheetContent extends StatefulWidget {
-  const AddTaskBottomSheetContent({super.key});
+class TaskCreationBottomSheet extends StatefulWidget {
+  const TaskCreationBottomSheet({super.key});
 
   @override
-  State<AddTaskBottomSheetContent> createState() => _AddTaskBottomSheetContentState();
+  State<TaskCreationBottomSheet> createState() =>
+      _TaskCreationBottomSheetState();
 }
 
-class _AddTaskBottomSheetContentState extends State<AddTaskBottomSheetContent> {
+class _TaskCreationBottomSheetState extends State<TaskCreationBottomSheet> {
   final _nameController = TextEditingController();
   final _dateController = TextEditingController();
   final _timeController = TextEditingController();
 
-  final _dateFormat = DateFormat('M/d/yyyy');
+  final _dateFormat = DateFormat('yMd');
+  final _timeFormat = DateFormat('jm');
 
   Future<void> _selectDate() async {
     final now = DateTime.now();
@@ -41,7 +43,10 @@ class _AddTaskBottomSheetContentState extends State<AddTaskBottomSheetContent> {
     final pickedTime =
         await showTimePicker(context: context, initialTime: TimeOfDay.now());
     if (pickedTime != null) {
-      final formattedTime = DateFormatter.formatTime(pickedTime);
+      final now = DateTime.now();
+      final dateTime = DateTime(
+          now.year, now.month, now.day, pickedTime.hour, pickedTime.minute);
+      final formattedTime = _timeFormat.format(dateTime);
       setState(() {
         _timeController.text = formattedTime;
       });
@@ -59,7 +64,6 @@ class _AddTaskBottomSheetContentState extends State<AddTaskBottomSheetContent> {
     _timeController.clear();
   }
 
-
   void _addNewTask() {
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
     if (_isValidInput()) {
@@ -67,8 +71,7 @@ class _AddTaskBottomSheetContentState extends State<AddTaskBottomSheetContent> {
         name: _nameController.text,
         dueDate: _dateFormat.parse(_dateController.text),
         // Parse using DateFormat
-        dueTime: TimeOfDay.fromDateTime(
-            DateFormat('HH:mm').parse(_timeController.text)),
+        dueTime: _timeFormat.parse(_timeController.text),
       );
       taskProvider.addTask(newTask);
       _clearInputFields();
@@ -182,12 +185,6 @@ class _AddTaskBottomSheetContentState extends State<AddTaskBottomSheetContent> {
       height: HelperFunctions.getScreenHeight(context) * 0.07,
       child: ElevatedButton(
         onPressed: _addNewTask,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: isDarkMode ? Colors.white : Colors.black,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
         child: TextWidget(
           text: 'Done',
           textSize: 20,

@@ -6,12 +6,13 @@ A simple yet powerful Todo app built with Flutter, featuring dark and light mode
 #Features
 
 Dark and Light Mode: Easily switch between dark and light themes.
-Task Management: Add and delete tasks with due dates and times.
+Task Management: Add, delete and update tasks with due dates and times.
 Provider State Management: Efficient state management using Provider package.
 Custom Fonts: Stylish typography using Google Fonts.
 Integration with External Services: Launch URLs with the url_launcher package.
 Iconography: Utilize light and dark for GitHub from font_awesome_flutter package
 used intl package for date and time formatting
+Database Storage: Integrated local Isar database for task storage. Now, tasks are stored locally on users device using Isar database, providing improved performance and reliability
 
 
 

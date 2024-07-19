@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:todo/data/datasources/isar_localdatabase.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/presentation/providers/task_provider.dart';
+import 'package:todo/presentation/widgets/TabWidgets/all_task_list.dart';
+import 'package:todo/presentation/widgets/TabWidgets/completed_task_list.dart';
+import 'package:todo/presentation/widgets/TabWidgets/pending_task_list.dart';
 import 'package:todo/presentation/widgets/task_creation_bottom_sheet.dart';
-import 'package:todo/presentation/widgets/app_bar.dart';
-import 'package:todo/presentation/widgets/task_list.dart';
-import 'package:todo/presentation/widgets/text.dart';
 import 'package:todo/utils/helper_functions.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,50 +19,56 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    return Scaffold(
-      appBar: const MyAppBar(),
-      body: _buildBody(isDarkMode),
-      floatingActionButton: _buildFloatingActionButton(),
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: _buildAppBar(isDarkMode),
+        body: _buildTabBarView(),
+        floatingActionButton: _buildFloatingActionButton(),
+      ),
     );
   }
 
-  Widget _buildBody(bool isDarkMode) {
-    return FutureBuilder(future: IsarLocalDatabase().fetchTasks(), builder: (context, snapShot) {
-      switch(snapShot.connectionState) {
-        case ConnectionState.waiting :
-          return _buildCircularProgressIndicator();
-        default:
-          if(snapShot.data!.isEmpty) {
-            return _buildEmptyTodoListMessage();
-          } else if(snapShot.hasError) {
-            return Center(child: Text(snapShot.error.toString()),);
-          } else {
-            return TaskList(
-              taskList: snapShot.data!,
-            );
-          }
-      }
-    });
-  }
-
-
-  Widget _buildEmptyTodoListMessage() {
-    return const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextWidget(text: 'No todos yet!', textSize: 14, isBoldFont: true),
-          SizedBox(height: 10),
-          TextWidget(
-              text: 'Tap + to add a new todo', textSize: 14, isBoldFont: true),
+  AppBar _buildAppBar(bool isDarkMode) {
+    return AppBar(
+      title: const Text('Your Task\'s'),
+      actions: [
+        IconButton(
+          onPressed: HelperFunctions.navigateToMyGithubAccount,
+          icon: FaIcon(
+            size: 30,
+            FontAwesomeIcons.github,
+            color: isDarkMode ? Colors.white : Colors.black,
+          ),
+        ),
+      ],
+      bottom: const TabBar(
+        tabs: [
+          Tab(
+            text: 'All',
+          ),
+          Tab(
+            text: 'Todo',
+          ),
+          Tab(
+            text: 'Completed',
+          )
         ],
       ),
     );
   }
 
-  Widget _buildCircularProgressIndicator() {
-    return const Center(
-      child: CircularProgressIndicator(),
+  Widget _buildTabBarView() {
+    return Consumer<TaskProvider>(
+      builder: (context, taskProvider, child) {
+        return const TabBarView(
+          children: [
+            AllTaskList(),
+            CompletedTaskList(),
+            PendingTaskList(),
+          ],
+        );
+      },
     );
   }
 

@@ -1,12 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../presentation/widgets/text.dart';
 
 class HelperFunctions {
   static double getScreenWidth(BuildContext context) {
-    return MediaQuery.of(context).size.width;
+    return MediaQuery
+        .of(context)
+        .size
+        .width;
   }
 
   static double getScreenHeight(BuildContext context) {
-    return MediaQuery.of(context).size.height;
+    return MediaQuery
+        .of(context)
+        .size
+        .height;
+  }
+
+  static void navigateToMyGithubAccount() async {
+    final url = Uri.parse('https://github.com/ChinmayMangela');
+    if (!await launchUrl(url)) {
+      return;
+    }
   }
 
   static void showSnackBar(BuildContext context, String message,
@@ -38,10 +54,29 @@ class HelperFunctions {
       ),
       builder: (context) {
         return SizedBox(
-          height: MediaQuery.of(context).size.height * 0.9,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height * 0.9,
           child: child,
         );
       },
     );
   }
+
+
+  static Widget buildEmptyTodoListMessage() {
+    return const Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextWidget(text: 'No todos yet!', textSize: 14, isBoldFont: true),
+          SizedBox(height: 10),
+          TextWidget(
+              text: 'Tap + to add a new todo', textSize: 14, isBoldFont: true),
+        ],
+      ),
+    );
+  }
+
 }

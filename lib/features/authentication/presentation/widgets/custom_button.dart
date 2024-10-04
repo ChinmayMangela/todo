@@ -11,15 +11,18 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDarkMode =
         Theme.of(context).colorScheme.brightness == Brightness.dark;
-    return Container(
-      height: HelperFunctions.getScreenHeight(context) * 0.08,
-      width: HelperFunctions.getScreenWidth(context),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: isDarkMode ? Colors.white : Colors.black,
-      ),
-      child: Center(
-        child: child,
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: Utils.getScreenHeight(context) * 0.08,
+        width: Utils.getScreenWidth(context),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: isDarkMode ? Colors.white : Colors.black,
+        ),
+        child: Center(
+          child: child,
+        ),
       ),
     );
   }

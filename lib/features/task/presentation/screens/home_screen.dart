@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
       title: const Text('Your Task\'s'),
       actions: [
         IconButton(
-          onPressed: HelperFunctions.navigateToMyGithubAccount,
+          onPressed: Utils.navigateToMyGithubAccount,
           icon: FaIcon(
             size: 30,
             FontAwesomeIcons.github,
@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       onPressed: () async {
-        await HelperFunctions.openModalBottomSheet(
+        await Utils.openModalBottomSheet(
           context: context,
           child: const TaskCreationBottomSheet(),
         );

@@ -26,12 +26,15 @@ class CustomTextField extends StatelessWidget {
           color: Colors.transparent,
         ));
     return TextField(
+      controller: controller,
       obscureText: obscureText,
       style: Theme.of(context)
           .textTheme
-          .bodyMedium!
+          .bodyLarge!
           .copyWith(color: isDarkMode ? Colors.white : Colors.black),
       decoration: InputDecoration(
+        hintText: hintText,
+
         suffixIcon: isPasswordField
             ? IconButton(
                 onPressed: onTogglePasswordVisibility,

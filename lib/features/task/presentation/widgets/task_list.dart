@@ -30,8 +30,7 @@ class TaskList extends StatelessWidget {
               SlidableAction(
                 onPressed: (context) {
                   taskListProvider.removeTask(currentTask);
-                  HelperFunctions.showSnackBar(
-                    context,
+                  Utils.showSnackBar(
                     '${currentTask.name} task removed',
                     () => taskListProvider.addTask(currentTask),
                   );
@@ -44,7 +43,7 @@ class TaskList extends StatelessWidget {
               ),
               SlidableAction(
                 onPressed: (context) {
-                  HelperFunctions.openModalBottomSheet(
+                  Utils.openModalBottomSheet(
                     context: context,
                     child: TaskEditingBottomSheet(
                       task: currentTask,

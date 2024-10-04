@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo/features/authentication/presentation/widgets/custom_button.dart';
 import 'package:todo/features/authentication/presentation/widgets/custom_text_field.dart';
+import 'package:todo/services/authentication_service.dart';
 import 'package:todo/utils/helper_functions.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -16,6 +17,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final _authenticationService = AuthenticationService();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -30,7 +32,26 @@ class _SignUpPageState extends State<SignUpPage> {
     _confirmPasswordController.dispose();
   }
 
-  void _signUpButtonTap() {}
+  void _signUpButtonTap() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+    final confirmPassword = _confirmPasswordController.text.trim();
+
+    if(email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+      Utils.showSnackBar('Please enter all the credentials');
+      return;
+    }
+
+    if(password != confirmPassword) {
+      Utils.showSnackBar('Passwords does not match');
+      return;
+    }
+
+    Utils.showCircularProgressIndicator(context);
+    await _authenticationService.signUpWithEmail(email: email, password: password);
+    Navigator.of(context).pop();
+
+  }
 
   void _onTogglePasswordVisibility() {
     setState(() {
@@ -52,7 +73,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _buildBody() {
-    final screenHeight = HelperFunctions.getScreenHeight(context);
+    final screenHeight = Utils.getScreenHeight(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(10),
@@ -75,17 +96,15 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _buildSignUpForm() {
-    final height = HelperFunctions.getScreenHeight(context);
+    final height = Utils.getScreenHeight(context);
     return Column(
       children: [
         _buildEmailField(),
-        SizedBox(height: height * 0.012),
+        SizedBox(height: height * 0.015),
         _buildPasswordField(),
-        SizedBox(height: height * 0.01),
+        SizedBox(height: height * 0.015),
         _buildConfirmPasswordField(),
-        SizedBox(height: height * 0.01),
-        _buildForgotPasswordField(),
-        SizedBox(height: height * 0.012),
+        SizedBox(height: height * 0.03),
         _buildSignUpButton(),
         SizedBox(height: height * 0.012),
         _buildBottomMessage(),
@@ -166,7 +185,7 @@ class _SignUpPageState extends State<SignUpPage> {
         TextButton(
           onPressed: widget.onLoginTap,
           child: Text('Log in here', style: Theme.of(context).textTheme.labelLarge!.copyWith(
-              color: isDarkMode ? Colors.white : Colors.black
+              color: isDarkMode ? Colors.white : Colors.black, fontWeight: FontWeight.bold,
           ),),
         ),
       ],

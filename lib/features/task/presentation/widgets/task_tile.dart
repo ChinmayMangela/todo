@@ -30,7 +30,7 @@ class _TaskTileState extends State<TaskTile> {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: double.maxFinite,
-      height: HelperFunctions.getScreenHeight(context) * 0.094,
+      height: Utils.getScreenHeight(context) * 0.094,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),

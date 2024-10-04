@@ -68,6 +68,7 @@ class _TaskCreationBottomSheetState extends State<TaskCreationBottomSheet> {
     final taskProvider = Provider.of<TaskProvider>(context, listen: false);
     if (_isValidInput()) {
       final newTask = Task(
+        id: '',
         name: _nameController.text,
         dueDate: _dateFormat.parse(_dateController.text),
         // Parse using DateFormat
@@ -77,7 +78,7 @@ class _TaskCreationBottomSheetState extends State<TaskCreationBottomSheet> {
       _clearInputFields();
       Navigator.pop(context);
     } else {
-      HelperFunctions.showSnackBar(context, 'Please fill all fields');
+      Utils.showSnackBar('Please fill all fields');
     }
   }
 
@@ -91,8 +92,8 @@ class _TaskCreationBottomSheetState extends State<TaskCreationBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = HelperFunctions.getScreenWidth(context);
-    final screenHeight = HelperFunctions.getScreenWidth(context);
+    final screenWidth = Utils.getScreenWidth(context);
+    final screenHeight = Utils.getScreenWidth(context);
     return Scaffold(
       appBar: _buildAppBar(),
       body: _buildBody(context, screenWidth, screenHeight),
@@ -182,7 +183,7 @@ class _TaskCreationBottomSheetState extends State<TaskCreationBottomSheet> {
   Widget _buildDoneButton(bool isDarkMode) {
     return SizedBox(
       width: double.infinity,
-      height: HelperFunctions.getScreenHeight(context) * 0.07,
+      height: Utils.getScreenHeight(context) * 0.07,
       child: ElevatedButton(
         onPressed: _addNewTask,
         child: TextWidget(

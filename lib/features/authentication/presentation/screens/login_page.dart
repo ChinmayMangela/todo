@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:todo/features/authentication/presentation/screens/forgot_password_page.dart';
 import 'package:todo/features/authentication/presentation/widgets/custom_button.dart';
 import 'package:todo/features/authentication/presentation/widgets/custom_text_field.dart';
+import 'package:todo/services/authentication_service.dart';
 import 'package:todo/utils/helper_functions.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key, required this.onSignUpTap});
 
   final void Function() onSignUpTap;
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _authenticationService = AuthenticationService();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
@@ -23,9 +27,19 @@ class _LoginPageState extends State<LoginPage> {
     _passwordController.dispose();
   }
 
+  void _logInButtonTap() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
 
-  void _logInButtonTap() {
+    if (email.isEmpty || password.isEmpty) {
+      Utils.showSnackBar('Please enter your credentials');
+      return;
+    }
 
+    Utils.showCircularProgressIndicator(context);
+    await _authenticationService.logInWithEmail(
+        email: email, password: password);
+    Navigator.pop(context);
   }
 
   void _onTogglePasswordVisibility() {
@@ -42,10 +56,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildBody() {
-    final screenHeight = HelperFunctions.getScreenHeight(context);
+    final screenHeight = Utils.getScreenHeight(context);
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -65,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildLogInForm() {
-    final height = HelperFunctions.getScreenHeight(context);
+    final height = Utils.getScreenHeight(context);
     return Column(
       children: [
         _buildEmailField(),
@@ -106,7 +120,10 @@ class _LoginPageState extends State<LoginPage> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const ForgotPasswordPage()));
+          },
           child: Text(
             'Forgot Password',
             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -133,18 +150,27 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildBottomMessage() {
-    final isDarkMode = Theme.of(context).colorScheme.brightness == Brightness.dark;
+    final isDarkMode =
+        Theme.of(context).colorScheme.brightness == Brightness.dark;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Don\'t have an account?', style: Theme.of(context).textTheme.labelMedium!.copyWith(
-            color: isDarkMode ? Colors.white : Colors.black
-        ),),
+        Text(
+          'Don\'t have an account?',
+          style: Theme.of(context)
+              .textTheme
+              .labelMedium!
+              .copyWith(color: isDarkMode ? Colors.white : Colors.black),
+        ),
         TextButton(
           onPressed: widget.onSignUpTap,
-          child: Text('Register here', style: Theme.of(context).textTheme.labelLarge!.copyWith(
-            color: isDarkMode ? Colors.white : Colors.black
-          ),),
+          child: Text(
+            'Register here',
+            style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                  color: isDarkMode ? Colors.white : Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
         ),
       ],
     );

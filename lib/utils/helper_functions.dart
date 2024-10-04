@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:todo/features/task/presentation/widgets/text.dart';
+import 'package:todo/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
-class HelperFunctions {
+class Utils {
   static double getScreenWidth(BuildContext context) {
-    return MediaQuery
-        .of(context)
-        .size
-        .width;
+    return MediaQuery.of(context).size.width;
   }
 
   static double getScreenHeight(BuildContext context) {
-    return MediaQuery
-        .of(context)
-        .size
-        .height;
+    return MediaQuery.of(context).size.height;
   }
 
   static void navigateToMyGithubAccount() async {
@@ -25,16 +19,18 @@ class HelperFunctions {
     }
   }
 
-  static void showSnackBar(BuildContext context, String message,
-      [void Function()? onTap]) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        action: onTap != null
-            ? SnackBarAction(label: 'Undo', onPressed: onTap)
-            : null,
-      ),
+  static void showSnackBar(String? message, [void Function()? onTap]) {
+    if (message == null) return;
+
+    final snackBar = SnackBar(
+      content: Text(message),
+      action: onTap != null
+          ? SnackBarAction(label: 'Undo', onPressed: onTap)
+          : null,
     );
+    messengerKey.currentState!
+      ..removeCurrentSnackBar()
+      ..showSnackBar(snackBar);
   }
 
   static Future<void> openModalBottomSheet({
@@ -54,16 +50,12 @@ class HelperFunctions {
       ),
       builder: (context) {
         return SizedBox(
-          height: MediaQuery
-              .of(context)
-              .size
-              .height * 0.9,
+          height: MediaQuery.of(context).size.height * 0.9,
           child: child,
         );
       },
     );
   }
-
 
   static Widget buildEmptyTodoListMessage() {
     return const Center(
@@ -79,4 +71,13 @@ class HelperFunctions {
     );
   }
 
+  static Future<void> showCircularProgressIndicator(BuildContext context) async {
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+  }
 }

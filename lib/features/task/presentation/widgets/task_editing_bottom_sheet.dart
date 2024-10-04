@@ -59,6 +59,7 @@ class _TaskEditingBottomSheetState extends State<TaskEditingBottomSheet> {
   void _editTask() {
     try {
       final updatedTask = Task(
+        id: '',
         name: _nameController.text,
         dueDate: _dateFormat.parse(_dateController.text),
         dueTime: _timeFormat.parse(_timeController.text),
@@ -93,8 +94,8 @@ class _TaskEditingBottomSheetState extends State<TaskEditingBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = HelperFunctions.getScreenWidth(context);
-    final screenHeight = HelperFunctions.getScreenWidth(context);
+    final screenWidth = Utils.getScreenWidth(context);
+    final screenHeight = Utils.getScreenWidth(context);
     return Scaffold(
       appBar: _buildAppBar(),
       body: _buildBody(context, screenWidth, screenHeight),
@@ -184,7 +185,7 @@ class _TaskEditingBottomSheetState extends State<TaskEditingBottomSheet> {
   Widget _buildEditTaskButton(bool isDarkMode) {
     return SizedBox(
       width: double.infinity,
-      height: HelperFunctions.getScreenHeight(context) * 0.07,
+      height: Utils.getScreenHeight(context) * 0.07,
       child: ElevatedButton(
         onPressed: _editTask,
         child: TextWidget(

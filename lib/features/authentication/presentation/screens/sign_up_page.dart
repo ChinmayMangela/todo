@@ -3,34 +3,44 @@ import 'package:todo/features/authentication/presentation/widgets/custom_button.
 import 'package:todo/features/authentication/presentation/widgets/custom_text_field.dart';
 import 'package:todo/utils/helper_functions.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key, required this.onSignUpTap});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({
+    super.key,
+    required this.onLoginTap,
+  });
 
-  final void Function() onSignUpTap;
+  final void Function() onLoginTap;
+
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
   }
 
-
-  void _logInButtonTap() {
-
-  }
+  void _signUpButtonTap() {}
 
   void _onTogglePasswordVisibility() {
     setState(() {
       _obscurePassword = !_obscurePassword;
+    });
+  }
+
+  void _onToggleConfirmPasswordVisibility() {
+    setState(() {
+      _obscureConfirmPassword = !_obscureConfirmPassword;
     });
   }
 
@@ -52,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               _buildTopIcon(),
               SizedBox(height: screenHeight * 0.1),
-              _buildLogInForm(),
+              _buildSignUpForm(),
             ],
           ),
         ),
@@ -64,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
     return const Icon(Icons.android, size: 150);
   }
 
-  Widget _buildLogInForm() {
+  Widget _buildSignUpForm() {
     final height = HelperFunctions.getScreenHeight(context);
     return Column(
       children: [
@@ -72,9 +82,11 @@ class _LoginPageState extends State<LoginPage> {
         SizedBox(height: height * 0.012),
         _buildPasswordField(),
         SizedBox(height: height * 0.01),
+        _buildConfirmPasswordField(),
+        SizedBox(height: height * 0.01),
         _buildForgotPasswordField(),
         SizedBox(height: height * 0.012),
-        _buildLoginButton(),
+        _buildSignUpButton(),
         SizedBox(height: height * 0.012),
         _buildBottomMessage(),
       ],
@@ -99,6 +111,16 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget _buildConfirmPasswordField() {
+    return CustomTextField(
+      controller: _confirmPasswordController,
+      hintText: 'Confirm Password',
+      isPasswordField: true,
+      obscureText: _obscureConfirmPassword,
+      onTogglePasswordVisibility: _onToggleConfirmPasswordVisibility,
+    );
+  }
+
   Widget _buildForgotPasswordField() {
     final bool isDarkMode =
         Theme.of(context).colorScheme.brightness == Brightness.dark;
@@ -118,13 +140,13 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildLoginButton() {
+  Widget _buildSignUpButton() {
     bool isDarkMode =
         Theme.of(context).colorScheme.brightness == Brightness.dark;
     return CustomButton(
-      onTap: _logInButtonTap,
+      onTap: _signUpButtonTap,
       child: Text(
-        'LOG IN',
+        'Sign Up',
         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
               color: isDarkMode ? Colors.black : Colors.white,
             ),
@@ -134,16 +156,17 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildBottomMessage() {
     final isDarkMode = Theme.of(context).colorScheme.brightness == Brightness.dark;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Don\'t have an account?', style: Theme.of(context).textTheme.labelMedium!.copyWith(
+        Text('Already have an account?', style: Theme.of(context).textTheme.labelMedium!.copyWith(
             color: isDarkMode ? Colors.white : Colors.black
         ),),
         TextButton(
-          onPressed: widget.onSignUpTap,
-          child: Text('Register here', style: Theme.of(context).textTheme.labelLarge!.copyWith(
-            color: isDarkMode ? Colors.white : Colors.black
+          onPressed: widget.onLoginTap,
+          child: Text('Log in here', style: Theme.of(context).textTheme.labelLarge!.copyWith(
+              color: isDarkMode ? Colors.white : Colors.black
           ),),
         ),
       ],

@@ -1,11 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/presentation/providers/task_provider.dart';
-import 'package:todo/presentation/screens/home_screen.dart';
-import 'package:todo/presentation/theme/app_theme.dart';
+import 'package:todo/configs/theme/app_theme.dart';
+import 'package:todo/features/authentication/presentation/screens/login_page.dart';
+import 'package:todo/features/task/presentation/providers/task_provider.dart';
+import 'package:todo/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     ChangeNotifierProvider(
       create: (context) => TaskProvider(),
@@ -25,7 +30,7 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       debugShowCheckedModeBanner: false,
-      home: const HomeScreen(),
+      home: const LoginPage(),
     );
   }
 }

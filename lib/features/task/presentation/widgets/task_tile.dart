@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo/domain/models/task.dart';
-import 'package:todo/presentation/widgets/text.dart';
+import 'package:todo/features/task/presentation/widgets/text.dart';
 import 'package:todo/utils/date_formatter.dart';
 import 'package:todo/utils/helper_functions.dart';
 

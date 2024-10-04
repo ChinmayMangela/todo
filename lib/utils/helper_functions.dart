@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:todo/features/task/presentation/widgets/text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../presentation/widgets/text.dart';
 
 class HelperFunctions {
   static double getScreenWidth(BuildContext context) {

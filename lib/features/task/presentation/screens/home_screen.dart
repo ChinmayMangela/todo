@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/presentation/providers/task_provider.dart';
-import 'package:todo/presentation/widgets/TabWidgets/all_task_list.dart';
-import 'package:todo/presentation/widgets/TabWidgets/completed_task_list.dart';
-import 'package:todo/presentation/widgets/TabWidgets/pending_task_list.dart';
-import 'package:todo/presentation/widgets/task_creation_bottom_sheet.dart';
+import 'package:todo/features/task/presentation/providers/task_provider.dart';
+import 'package:todo/features/task/presentation/widgets/TabWidgets/all_task_list.dart';
+import 'package:todo/features/task/presentation/widgets/TabWidgets/completed_task_list.dart';
+import 'package:todo/features/task/presentation/widgets/TabWidgets/pending_task_list.dart';
+import 'package:todo/features/task/presentation/widgets/task_creation_bottom_sheet.dart';
 import 'package:todo/utils/helper_functions.dart';
 
 class HomeScreen extends StatefulWidget {

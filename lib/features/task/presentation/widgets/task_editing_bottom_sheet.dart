@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/presentation/widgets/name_text_field.dart';
-import 'package:todo/presentation/widgets/text.dart';
-import 'package:todo/presentation/widgets/text_field.dart';
+import 'package:todo/domain/models/task.dart';
+import 'package:todo/features/task/presentation/widgets/name_text_field.dart';
+import 'package:todo/features/task/presentation/widgets/text.dart';
+import 'package:todo/features/task/presentation/widgets/text_field.dart';
 import 'package:todo/utils/date_formatter.dart';
 import 'package:todo/utils/helper_functions.dart';
-
-import '../../domain/models/task.dart';
 import '../providers/task_provider.dart';
 
 class TaskEditingBottomSheet extends StatefulWidget {

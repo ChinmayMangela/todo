@@ -141,9 +141,10 @@ class _LoginPageState extends State<LoginPage> {
     return CustomButton(
       onTap: _logInButtonTap,
       child: Text(
-        'LOG IN',
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+        'Log In',
+        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
               color: isDarkMode ? Colors.black : Colors.white,
+          fontWeight: FontWeight.w900,
             ),
       ),
     );

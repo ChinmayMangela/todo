@@ -14,8 +14,12 @@ class TextFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDarkMode = Theme.of(context).colorScheme.brightness == Brightness.dark;
     return Expanded(
       child: TextField(
+        style: Theme.of(context).textTheme.labelMedium!.copyWith(
+          color: isDarkMode ? Colors.white : Colors.black,
+        ),
         controller: controller,
         decoration: InputDecoration(
           suffixIcon: getSuffixIcon(),

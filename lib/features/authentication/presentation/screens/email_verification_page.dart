@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:todo/features/authentication/presentation/widgets/custom_button.dart';
 import 'package:todo/features/task/presentation/screens/home_screen.dart';
 import 'package:todo/services/authentication_service.dart';
-import 'package:todo/utils/helper_functions.dart';
 
 class EmailVerificationPage extends StatefulWidget {
   const EmailVerificationPage({super.key});
@@ -21,7 +20,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
   @override
   void dispose() {
     super.dispose();
-    timer!.cancel();
+    timer?.cancel();
   }
 
   @override
@@ -60,21 +59,24 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
     return isEmailVerified
         ? const HomeScreen()
         : Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'A verification email has been sent to your account',
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: isDarkMode ? Colors.white : Colors.black,
-                        ),
-                  ),
-                  const SizedBox(height: 20),
-                  _buildResendButton(),
-                  const SizedBox(height: 10),
-                  _buildCancelButton(),
-                ],
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'A verification email has been sent to your account',
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: isDarkMode ? Colors.white : Colors.black,
+                          ),
+                    ),
+                    const SizedBox(height: 20),
+                    _buildResendButton(),
+                    const SizedBox(height: 10),
+                    _buildCancelButton(),
+                  ],
+                ),
               ),
             ),
           );
@@ -93,8 +95,11 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
             color: isDarkMode ? Colors.black : Colors.white,
           ),
           const SizedBox(width: 10),
-          const Text(
+          Text(
             'Resend Email',
+            style: Theme.of(context).textTheme.labelMedium!.copyWith(
+              color: isDarkMode ? Colors.black : Colors.white,
+            ),
           ),
         ],
       ),
@@ -102,11 +107,15 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
   }
 
   Widget _buildCancelButton() {
+    final bool isDarkMode =
+        Theme.of(context).colorScheme.brightness == Brightness.dark;
     return CustomButton(
       onTap: () async {
         await _authenticationService.signOut();
       },
-      child: Text('Cancel'),
+      child: Text('Cancel' ,style: Theme.of(context).textTheme.labelMedium!.copyWith(
+        color: isDarkMode ? Colors.black : Colors.white,
+      ),),
     );
   }
 }

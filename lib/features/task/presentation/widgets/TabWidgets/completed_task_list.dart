@@ -1,19 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:todo/features/task/presentation/providers/task_provider.dart';
-import 'package:todo/features/task/presentation/widgets/task_list.dart';
+import 'package:todo/features/task/presentation/widgets/TabWidgets/filtered_task_list.dart';
 
 class CompletedTaskList extends StatelessWidget {
   const CompletedTaskList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TaskProvider>(
-      builder: (context, taskProvider, child) {
-        return TaskList(
-          tasks: taskProvider.tasks.where((task) => !task.isCompleted).toList(),
-        );
-      },
-    );
+    return FilteredTaskList(filter: (task) => task.isCompleted);
   }
 }

@@ -13,6 +13,9 @@ class NameTextField extends StatelessWidget {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Expanded(
       child: TextField(
+        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+          color: isDarkMode ? Colors.white : Colors.black
+        ),
           maxLength: 30,
           controller: controller,
           decoration: InputDecoration(

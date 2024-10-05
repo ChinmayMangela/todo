@@ -69,7 +69,6 @@ class _TaskEditingBottomSheetState extends State<TaskEditingBottomSheet> {
           .updateTask(widget.task, updatedTask);
       Navigator.of(context).pop();
     } catch (e) {
-      // Handle the exception, e.g., display an error message
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Invalid date or time format')),
       );
@@ -121,13 +120,13 @@ class _TaskEditingBottomSheetState extends State<TaskEditingBottomSheet> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const TextWidget(text: 'Edit a task', textSize: 42, isBoldFont: true),
+          TextWidget(text: 'Edit a task', textSize: 42, isBoldFont: true, textColor: isDarkMode ? Colors.white : Colors.black,),
           SizedBox(height: screenHeight * 0.05),
-          _buildInputCard(_nameOfTaskComponent(screenWidth)),
+          _buildInputCard(_nameOfTaskComponent(screenWidth, isDarkMode)),
           SizedBox(height: screenHeight * 0.04),
-          _buildInputCard(_dateComponent(screenWidth)),
+          _buildInputCard(_dateComponent(screenWidth, isDarkMode)),
           SizedBox(height: screenHeight * 0.04),
-          _buildInputCard(_timeComponent(screenWidth)),
+          _buildInputCard(_timeComponent(screenWidth, isDarkMode)),
           SizedBox(height: screenHeight * 0.08),
           _buildEditTaskButton(isDarkMode),
         ],
@@ -144,20 +143,20 @@ class _TaskEditingBottomSheetState extends State<TaskEditingBottomSheet> {
     );
   }
 
-  Widget _nameOfTaskComponent(double screenWidth) {
+  Widget _nameOfTaskComponent(double screenWidth, bool isDarkMode) {
     return Row(
       children: [
-        const TextWidget(text: 'Name', textSize: 20, isBoldFont: true),
+        TextWidget(text: 'Name', textSize: 20, isBoldFont: true, textColor: isDarkMode ? Colors.white : Colors.black,),
         SizedBox(width: screenWidth * 0.08),
         NameTextField(controller: _nameController)
       ],
     );
   }
 
-  Widget _dateComponent(double screenWidth) {
+  Widget _dateComponent(double screenWidth, bool isDarkMode) {
     return Row(
       children: [
-        const TextWidget(text: 'Date', textSize: 20, isBoldFont: true),
+        TextWidget(text: 'Date', textSize: 20, isBoldFont: true, textColor: isDarkMode ? Colors.white : Colors.black,),
         SizedBox(width: screenWidth * 0.08),
         TextFieldWidget(
           controller: _dateController,
@@ -168,10 +167,10 @@ class _TaskEditingBottomSheetState extends State<TaskEditingBottomSheet> {
     );
   }
 
-  Widget _timeComponent(double screenWidth) {
+  Widget _timeComponent(double screenWidth, bool isDarkMode) {
     return Row(
       children: [
-        const TextWidget(text: 'Time', textSize: 20, isBoldFont: true),
+         TextWidget(text: 'Time', textSize: 20, isBoldFont: true, textColor: isDarkMode ? Colors.white : Colors.black,),
         SizedBox(width: screenWidth * 0.08),
         TextFieldWidget(
           controller: _timeController,
@@ -189,10 +188,10 @@ class _TaskEditingBottomSheetState extends State<TaskEditingBottomSheet> {
       child: ElevatedButton(
         onPressed: _editTask,
         child: TextWidget(
+          textColor: isDarkMode ? Colors.black : Colors.white,
           text: 'Edit',
           textSize: 20,
           isBoldFont: true,
-          textColor: isDarkMode ? Colors.black : Colors.white,
         ),
       ),
     );

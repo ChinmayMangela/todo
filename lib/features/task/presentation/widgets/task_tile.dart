@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo/domain/models/task.dart';
 import 'package:todo/features/task/presentation/widgets/text.dart';
+import 'package:todo/services/task_service.dart';
 import 'package:todo/utils/date_formatter.dart';
 import 'package:todo/utils/helper_functions.dart';
 
@@ -18,6 +20,7 @@ class TaskTile extends StatefulWidget {
 }
 
 class _TaskTileState extends State<TaskTile> {
+  final user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -46,6 +49,7 @@ class _TaskTileState extends State<TaskTile> {
             setState(() {
               widget.task.isCompleted = value!;
             });
+            TaskService().updateCheckBoxState(user!.uid, widget.task.id, widget.task.isCompleted);
           },
           value: widget.task.isCompleted,
         ),

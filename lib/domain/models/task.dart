@@ -1,4 +1,3 @@
-import 'package:isar/isar.dart';
 
 class Task {
   final String id;
@@ -19,8 +18,9 @@ class Task {
     return Task(
       id: id,
       name: data['name'],
-      dueDate: data['dueDate'],
-      dueTime: data['dueTime'],
+      dueDate: DateTime.parse(data['dueDate']),
+      dueTime: DateTime.parse(data['dueTime']),
+      isCompleted: data['isCompleted'] ?? false,
     );
   }
 
@@ -28,8 +28,9 @@ class Task {
     return {
       'id': id,
       'name': name,
-      'dueDate': dueDate,
-      'dueTime': dueTime
+      'dueDate': dueDate.toIso8601String(),
+      'dueTime': dueTime.toIso8601String(),
+      'isCompleted': isCompleted,
     };
   }
 }

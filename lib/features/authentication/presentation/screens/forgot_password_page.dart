@@ -23,17 +23,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       Utils.showSnackBar('Please enter your email');
       return;
     }
-     
-    if (FirebaseAuth.instance.currentUser == null) {
-      Utils.showSnackBar('You are not logged in');
-      return;
-    }
-
-
-    if (email != FirebaseAuth.instance.currentUser!.email) {
-      Utils.showSnackBar('Please enter a valid email');
-      return;
-    }
 
     await _authenticationService.sendResetPasswordEmail(email: email);
   }

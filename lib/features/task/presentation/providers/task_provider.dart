@@ -1,48 +1,28 @@
 import 'package:flutter/material.dart';
 
 import 'package:todo/domain/models/task.dart';
+import 'package:todo/services/task_service.dart';
 
-class TaskProvider extends ChangeNotifier  {
+class TaskProvider extends ChangeNotifier {
+  final _taskService = TaskService();
+  final String userId;
 
-  final List<Task> _tasks = [];
+  TaskProvider(this.userId);
 
-  List<Task> get tasks => _tasks;
+  Stream<List<Task>> get tasksStream => _taskService.fetchTasks(userId);
 
-  void addTask(Task task) {
-    _tasks.add(task);
+  void addTask(Task task) async {
+    await _taskService.addTask(task, userId);
     notifyListeners();
   }
 
-  void removeTask(Task task) {
-    _tasks.remove(task);
+  void removeTask(Task task) async {
+    await _taskService.removeTask(userId, task.id);
     notifyListeners();
   }
 
-  void updateTask(Task oldTask, Task newTask) {
-    final oldTaskIndex = _tasks.indexOf(oldTask);
-    if(oldTaskIndex != -1) {
-      _tasks[oldTaskIndex] = newTask;
-    }
+  void updateTask(Task oldTask, Task newTask) async {
+    await _taskService.updateTask(userId, oldTask.id, newTask);
     notifyListeners();
   }
-// void addTask(Task task) async {
-//   await IsarLocalDatabase().addTask(task);
-//   notifyListeners();
-// }
-//
-// void removeTask(Task task) async {
-//   await IsarLocalDatabase().removeTask(task.id);
-//   notifyListeners();
-// }
-//
-// void updateTask(Task oldTask, Task updatedTask) async {
-//   await IsarLocalDatabase().updateTask(oldTask, updatedTask);
-//   notifyListeners();
-// }
-//
-// Future<List<Task>> fetchAllTasks() async {
-//   final tasks = await IsarLocalDatabase().fetchTasks();
-//   notifyListeners();
-//   return tasks;
-// }
 }

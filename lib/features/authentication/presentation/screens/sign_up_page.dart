@@ -166,8 +166,9 @@ class _SignUpPageState extends State<SignUpPage> {
       onTap: _signUpButtonTap,
       child: Text(
         'Sign Up',
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
               color: isDarkMode ? Colors.black : Colors.white,
+          fontWeight: FontWeight.w900,
             ),
       ),
     );

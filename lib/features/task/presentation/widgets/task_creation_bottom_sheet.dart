@@ -119,13 +119,18 @@ class _TaskCreationBottomSheetState extends State<TaskCreationBottomSheet> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const TextWidget(text: 'Add a task', textSize: 42, isBoldFont: true),
+          TextWidget(
+            text: 'Add a task',
+            textSize: 42,
+            isBoldFont: true,
+            textColor: isDarkMode ? Colors.white : Colors.black,
+          ),
           SizedBox(height: screenHeight * 0.05),
-          _buildInputCard(_nameOfTaskComponent(screenWidth)),
+          _buildInputCard(_nameOfTaskComponent(screenWidth, isDarkMode)),
           SizedBox(height: screenHeight * 0.04),
-          _buildInputCard(_dateComponent(screenWidth)),
+          _buildInputCard(_dateComponent(screenWidth, isDarkMode)),
           SizedBox(height: screenHeight * 0.04),
-          _buildInputCard(_timeComponent(screenWidth)),
+          _buildInputCard(_timeComponent(screenWidth, isDarkMode)),
           SizedBox(height: screenHeight * 0.08),
           _buildDoneButton(isDarkMode),
         ],
@@ -142,20 +147,30 @@ class _TaskCreationBottomSheetState extends State<TaskCreationBottomSheet> {
     );
   }
 
-  Widget _nameOfTaskComponent(double screenWidth) {
+  Widget _nameOfTaskComponent(double screenWidth, bool isDarkMode) {
     return Row(
       children: [
-        const TextWidget(text: 'Name', textSize: 20, isBoldFont: true),
+        TextWidget(
+          text: 'Name',
+          textSize: 20,
+          isBoldFont: true,
+          textColor: isDarkMode ? Colors.white : Colors.black,
+        ),
         SizedBox(width: screenWidth * 0.08),
         NameTextField(controller: _nameController)
       ],
     );
   }
 
-  Widget _dateComponent(double screenWidth) {
+  Widget _dateComponent(double screenWidth, bool isDarkMode) {
     return Row(
       children: [
-        const TextWidget(text: 'Date', textSize: 20, isBoldFont: true),
+        TextWidget(
+          text: 'Date',
+          textSize: 20,
+          isBoldFont: true,
+          textColor: isDarkMode ? Colors.white : Colors.black,
+        ),
         SizedBox(width: screenWidth * 0.08),
         TextFieldWidget(
           controller: _dateController,
@@ -166,10 +181,15 @@ class _TaskCreationBottomSheetState extends State<TaskCreationBottomSheet> {
     );
   }
 
-  Widget _timeComponent(double screenWidth) {
+  Widget _timeComponent(double screenWidth, bool isDarkMode) {
     return Row(
       children: [
-        const TextWidget(text: 'Time', textSize: 20, isBoldFont: true),
+        TextWidget(
+          text: 'Time',
+          textSize: 20,
+          isBoldFont: true,
+          textColor: isDarkMode ? Colors.white : Colors.black,
+        ),
         SizedBox(width: screenWidth * 0.08),
         TextFieldWidget(
           controller: _timeController,
@@ -187,10 +207,10 @@ class _TaskCreationBottomSheetState extends State<TaskCreationBottomSheet> {
       child: ElevatedButton(
         onPressed: _addNewTask,
         child: TextWidget(
+          textColor: isDarkMode ? Colors.black : Colors.white,
           text: 'Done',
           textSize: 20,
           isBoldFont: true,
-          textColor: isDarkMode ? Colors.black : Colors.white,
         ),
       ),
     );

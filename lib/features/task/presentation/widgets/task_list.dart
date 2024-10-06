@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/domain/models/task.dart';
+import 'package:todo/features/task/domain/models/task.dart';
 import 'package:todo/features/task/presentation/providers/task_provider.dart';
 import 'package:todo/features/task/presentation/widgets/task_editing_bottom_sheet.dart';
 import 'package:todo/features/task/presentation/widgets/task_tile.dart';

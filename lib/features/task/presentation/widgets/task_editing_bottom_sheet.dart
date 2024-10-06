@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/domain/models/task.dart';
+import 'package:todo/features/task/domain/models/task.dart';
 import 'package:todo/features/task/presentation/widgets/name_text_field.dart';
 import 'package:todo/features/task/presentation/widgets/text.dart';
 import 'package:todo/features/task/presentation/widgets/text_field.dart';

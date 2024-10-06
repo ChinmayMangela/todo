@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:todo/domain/models/task.dart';
+import 'package:todo/features/task/domain/models/task.dart';
 import 'package:todo/utils/helper_functions.dart';
 
 class TaskService {

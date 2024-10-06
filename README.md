@@ -13,6 +13,7 @@ Integration with External Services: Launch URLs with the url_launcher package.
 Iconography: Utilize light and dark for GitHub from font_awesome_flutter package
 used intl package for date and time formatting
 Database Storage: Integrated Cloud Firestore database for tasks and user email storage.
+Notifications: App will show notifications as per task due time
 
 
 

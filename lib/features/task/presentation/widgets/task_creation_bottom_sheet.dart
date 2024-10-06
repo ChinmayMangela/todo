@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/api/notification_api.dart';
 import 'package:todo/features/task/domain/models/task.dart';
 import 'package:todo/features/task/presentation/providers/task_provider.dart';
 import 'package:todo/features/task/presentation/widgets/name_text_field.dart';
@@ -41,7 +42,7 @@ class _TaskCreationBottomSheetState extends State<TaskCreationBottomSheet> {
 
   Future<void> _selectTime() async {
     final pickedTime =
-        await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    await showTimePicker(context: context, initialTime: TimeOfDay.now());
     if (pickedTime != null) {
       final now = DateTime.now();
       final dateTime = DateTime(
@@ -74,6 +75,7 @@ class _TaskCreationBottomSheetState extends State<TaskCreationBottomSheet> {
         // Parse using DateFormat
         dueTime: _timeFormat.parse(_timeController.text),
       );
+      NotificationApi.scheduleNotification(task: newTask);
       taskProvider.addTask(newTask);
       _clearInputFields();
       Navigator.pop(context);
@@ -111,31 +113,31 @@ class _TaskCreationBottomSheetState extends State<TaskCreationBottomSheet> {
       BuildContext context, double screenWidth, double screenHeight) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return SingleChildScrollView(
-        // Wrap in SingleChildScrollView to prevent overflow
+      // Wrap in SingleChildScrollView to prevent overflow
         child: Container(
-      padding: EdgeInsets.symmetric(
-          horizontal: screenWidth * 0.1, vertical: screenHeight * 0.06),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextWidget(
-            text: 'Add a task',
-            textSize: 42,
-            isBoldFont: true,
-            textColor: isDarkMode ? Colors.white : Colors.black,
+          padding: EdgeInsets.symmetric(
+              horizontal: screenWidth * 0.1, vertical: screenHeight * 0.06),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextWidget(
+                text: 'Add a task',
+                textSize: 42,
+                isBoldFont: true,
+                textColor: isDarkMode ? Colors.white : Colors.black,
+              ),
+              SizedBox(height: screenHeight * 0.05),
+              _buildInputCard(_nameOfTaskComponent(screenWidth, isDarkMode)),
+              SizedBox(height: screenHeight * 0.04),
+              _buildInputCard(_dateComponent(screenWidth, isDarkMode)),
+              SizedBox(height: screenHeight * 0.04),
+              _buildInputCard(_timeComponent(screenWidth, isDarkMode)),
+              SizedBox(height: screenHeight * 0.08),
+              _buildDoneButton(isDarkMode),
+            ],
           ),
-          SizedBox(height: screenHeight * 0.05),
-          _buildInputCard(_nameOfTaskComponent(screenWidth, isDarkMode)),
-          SizedBox(height: screenHeight * 0.04),
-          _buildInputCard(_dateComponent(screenWidth, isDarkMode)),
-          SizedBox(height: screenHeight * 0.04),
-          _buildInputCard(_timeComponent(screenWidth, isDarkMode)),
-          SizedBox(height: screenHeight * 0.08),
-          _buildDoneButton(isDarkMode),
-        ],
-      ),
-    ));
+        ));
   }
 
   Widget _buildInputCard(Widget child) {
@@ -216,3 +218,4 @@ class _TaskCreationBottomSheetState extends State<TaskCreationBottomSheet> {
     );
   }
 }
+

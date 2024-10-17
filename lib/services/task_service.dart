@@ -8,8 +8,8 @@ class TaskService {
   Future<void> addTask(Task task, String userId) async {
     try {
       await _fireStore.collection('users').doc(userId).collection('tasks').add(
-            task.toJson(),
-          );
+        task.toJson(),
+      );
     } on FirebaseException catch (e) {
       Utils.showSnackBar(e.message);
     }
@@ -36,8 +36,8 @@ class TaskService {
           .collection('tasks')
           .doc(oldTaskId)
           .update(
-            newTask.toJson(),
-          );
+        newTask.toJson(),
+      );
     } on FirebaseException catch (e) {
       Utils.showSnackBar(e.message);
     }
@@ -49,14 +49,16 @@ class TaskService {
         .doc(userId)
         .collection('tasks')
         .snapshots()
-        .map((snapshot) => snapshot.docs
+        .map((snapshot) =>
+        snapshot.docs
             .map(
               (task) => Task.fromJson(task.data(), task.id),
-            )
+        )
             .toList());
   }
 
-  Future<void> updateCheckBoxState(String userId, String taskId, bool isCompleted) async {
+  Future<void> updateCheckBoxState(String userId, String taskId,
+      bool isCompleted) async {
     try {
       await _fireStore.collection('users')
           .doc(userId)
@@ -66,5 +68,24 @@ class TaskService {
     } on FirebaseException catch (e) {
       Utils.showSnackBar(e.message);
     }
+  }
+
+  Future<void> addTaskToOverDuePage(String userId, Task task) async {
+    try {
+      await _fireStore.collection('users').doc(userId)
+          .collection('overdue_tasks')
+          .add(task.toJson(),);
+    } on FirebaseException catch(e) {
+      Utils.showSnackBar(e.toString());
+    }
+  }
+
+  Stream<List<Task>> fetchOverDueTasks(String userId) {
+   return _fireStore.collection('users').doc(userId).collection('overdue_tasks')
+       .snapshots().map((snapshot) {
+         return snapshot.docs.map((task) {
+           return Task.fromJson(task.data(), task.id);
+         }).toList();
+   });
   }
 }

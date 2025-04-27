@@ -83,9 +83,7 @@ class NotificationApi {
       'Task Reminder',
       task.name,
       scheduleTime,
-      _notificationDetails(),
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
+      _notificationDetails(), androidScheduleMode: AndroidScheduleMode.exact,
     );
     print('Notification display');
   }

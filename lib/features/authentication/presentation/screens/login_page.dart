@@ -32,14 +32,28 @@ class _LoginPageState extends State<LoginPage> {
     final password = _passwordController.text.trim();
 
     if (email.isEmpty || password.isEmpty) {
-      Utils.showSnackBar('Please enter your credentials');
+      if (mounted) { // Check if the widget is still in the tree
+        Utils.showSnackBar('Please enter your credentials');
+      }
       return;
     }
 
-    Utils.showCircularProgressIndicator(context);
-    await _authenticationService.logInWithEmail(
-        email: email, password: password);
-    Navigator.pop(context);
+    if (mounted) { // Check before showing the progress indicator
+      Utils.showCircularProgressIndicator(context);
+    }
+
+    try {
+      await _authenticationService.logInWithEmail(
+          email: email, password: password);
+      if (mounted) { // Check before navigating
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      if (mounted) { // Check before showing an error snackbar
+        Navigator.pop(context); // Hide the progress indicator
+        Utils.showSnackBar('Login failed: $e');
+      }
+    }
   }
 
   void _onTogglePasswordVisibility() {

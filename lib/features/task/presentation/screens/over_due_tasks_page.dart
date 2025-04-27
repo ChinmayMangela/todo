@@ -29,7 +29,7 @@ class OverDueTasksPage extends StatelessWidget {
         return const Center(child: CircularProgressIndicator(),);
       }
 
-      if(snapshot.data!.isEmpty) {
+      if(snapshot.data == null || snapshot.data!.isEmpty) {
         return Center(child: Text('There are no overdue tasks', style: Theme.of(context).textTheme.bodyMedium!.copyWith(
           color: isDarkMode ? Colors.white : Colors.black,
         ),));

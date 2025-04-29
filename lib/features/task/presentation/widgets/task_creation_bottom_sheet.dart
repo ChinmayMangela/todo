@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,7 @@ import 'package:todo/features/task/presentation/providers/task_provider.dart';
 import 'package:todo/features/task/presentation/widgets/name_text_field.dart';
 import 'package:todo/features/task/presentation/widgets/text.dart';
 import 'package:todo/features/task/presentation/widgets/text_field.dart';
+import 'package:todo/services/task_service.dart';
 import 'package:todo/utils/date_formatter.dart';
 import 'package:todo/utils/helper_functions.dart';
 
@@ -65,8 +67,7 @@ class _TaskCreationBottomSheetState extends State<TaskCreationBottomSheet> {
     _timeController.clear();
   }
 
-  void _addNewTask() {
-    final taskProvider = Provider.of<TaskProvider>(context, listen: false);
+  void _addNewTask() async {
     if (_isValidInput()) {
       final newTask = Task(
         id: '',
@@ -76,7 +77,9 @@ class _TaskCreationBottomSheetState extends State<TaskCreationBottomSheet> {
         dueTime: _timeFormat.parse(_timeController.text),
       );
       NotificationApi.scheduleNotification(task: newTask);
-      taskProvider.addTask(newTask);
+      final taskService = TaskService();
+      print(FirebaseAuth.instance.currentUser!.uid);
+      await taskService.addTask(newTask, FirebaseAuth.instance.currentUser!.uid);
       _clearInputFields();
       Navigator.pop(context);
     } else {

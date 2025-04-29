@@ -1,10 +1,10 @@
 
 
 class EndUser {
-  final String id;
+  String id;
   final String email;
 
-  const EndUser({required this.id, required this.email});
+  EndUser({required this.id, required this.email});
 
   factory EndUser.fromJson(Map<String, dynamic> json, String id) {
     return EndUser(

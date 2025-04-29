@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todo/services/user_service.dart';
 import 'package:todo/utils/helper_functions.dart';
 
+import '../features/authentication/domain/models/end_user.dart';
+
 class AuthenticationService {
   final _firebaseAuth = FirebaseAuth.instance;
   final _userService = UserService();
@@ -25,11 +27,13 @@ class AuthenticationService {
   }
 
   Future<UserCredential?> signUpWithEmail(
-      {required String email, required String password}) async {
+      {required EndUser endUser, required String password}) async {
     try {
       final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      await _userService.addUser(email: email);
+          email: endUser.email, password: password);
+      final id = userCredential.user!.uid;
+      endUser.id = id;
+      await _userService.saveUser(endUser: endUser, id: id);
       return userCredential;
     } on FirebaseAuthException catch (e) {
       Utils.showSnackBar(e.message);

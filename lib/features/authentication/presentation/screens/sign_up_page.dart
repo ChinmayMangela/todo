@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/features/authentication/domain/models/end_user.dart';
 import 'package:todo/features/authentication/presentation/widgets/custom_button.dart';
 import 'package:todo/features/authentication/presentation/widgets/custom_text_field.dart';
 import 'package:todo/services/authentication_service.dart';
@@ -47,8 +48,9 @@ class _SignUpPageState extends State<SignUpPage> {
       return;
     }
 
+    final newUser = EndUser(id: '', email: email);
     Utils.showCircularProgressIndicator(context);
-    await _authenticationService.signUpWithEmail(email: email, password: password);
+    await _authenticationService.signUpWithEmail(endUser: newUser, password: password);
     Navigator.of(context).pop();
 
   }
